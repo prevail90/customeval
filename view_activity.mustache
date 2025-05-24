@@ -1,0 +1,32 @@
+<div class="mod-customeval-activity-container">
+    <h1>{{name}}</h1>
+    <div class="mod-customeval-intro">{{{intro}}}</div>
+
+    {{#canEvaluate}}
+    <section class="mod-customeval-evaluate-section mt-4" aria-labelledby="evaluate-students-heading">
+        <h2 id="evaluate-students-heading">{{#str}}studentstoevaluate, mod_customeval{{/str}}</h2>
+        <div class="mod-customeval-student-list list-group">
+            {{#students}}
+            <div class="list-group-item list-group-item-action">
+                <button class="btn btn-link text-left w-100 evaluate-btn p-0" data-userid="{{id}}" data-action="evaluate">
+                    <div class="d-flex align-items-center">
+                        <img src="{{picture}}" class="rounded-circle mr-3" width="48" height="48" alt="" aria-hidden="true">
+                        <span class="student-name">{{fullname}}</span>
+                        <span class="ml-auto text-muted">{{#str}}evaluate, mod_customeval{{/str}}</span>
+                    </div>
+                </button>
+            </div>
+            {{/students}}
+        </div>
+    </section>
+    {{/canEvaluate}}
+
+    {{#canBeEvaluated}}
+    <section class="mod-customeval-results-section mt-4" aria-labelledby="your-evaluations-heading">
+        <h2 id="your-evaluations-heading">{{#str}}yourevaluations, mod_customeval{{/str}}</h2>
+        <div class="alert alert-info mb-0">
+            {{#str}}evaluationswillappearhere, mod_customeval{{/str}}
+        </div>
+    </section>
+    {{/canBeEvaluated}}
+</div>

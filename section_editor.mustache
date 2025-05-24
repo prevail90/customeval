@@ -1,0 +1,25 @@
+<div class="section-container card mb-3" id="{{sectionid}}">
+    <div class="card-header section-header d-flex justify-content-between">
+        <span>New Section</span>
+        <button type="button" class="btn btn-danger btn-sm delete-section">
+            {{#str}}delete, core{{/str}}
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label>{{#str}}sectionname, mod_customeval{{/str}}</label>
+            <input type="text" class="form-control section-name" placeholder="Section name">
+        </div>
+        <div class="form-group">
+            <label>{{#str}}sectiondescription, mod_customeval{{/str}}</label>
+            <textarea class="form-control section-description" rows="2"></textarea>
+        </div>
+
+        <h5>{{#str}}options, mod_customeval{{/str}}</h5>
+        <div class="section-options"></div>
+
+        <button type="button" class="btn btn-secondary add-section-option">
+            {{#str}}addoption, mod_customeval{{/str}}
+        </button>
+    </div>
+</div>
