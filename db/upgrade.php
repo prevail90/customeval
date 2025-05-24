@@ -47,5 +47,33 @@ function xmldb_mod_customeval_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2024060300, 'customeval');
     }
 
+    if ($oldversion < 2025052422) { // Update with your new version
+        
+        // Define table customeval to be modified
+        $table = new xmldb_table('customeval');
+
+        // Add gradepass field
+        $gradepass_field = new xmldb_field('gradepass', XMLDB_TYPE_NUMBER, '10,2', null, 
+                                         XMLDB_NOTNULL, null, 0, 'maxgrade');
+        if (!$dbman->field_exists($table, $gradepass_field)) {
+            $dbman->add_field($table, $gradepass_field);
+        }
+
+        // Add maxgrade field (if not already present)
+        $maxgrade_field = new xmldb_field('maxgrade', XMLDB_TYPE_NUMBER, '10,2', null, 
+                                        XMLDB_NOTNULL, null, 100, 'formula');
+        if (!$dbman->field_exists($table, $maxgrade_field)) {
+            $dbman->add_field($table, $maxgrade_field);
+        }
+
+        // Conditionally add index for performance
+        $index = new xmldb_index('gradepass_idx', XMLDB_INDEX_NOTUNIQUE, ['gradepass']);
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        upgrade_mod_savepoint(true, 2024061801, 'customeval');
+    }
+
     return true;
 }
