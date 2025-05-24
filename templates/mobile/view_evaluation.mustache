@@ -1,0 +1,41 @@
+<div class="mod-customeval-evaluation-container">
+    <h1>{{#str}}evaluating, mod_customeval{{/str}} {{studentname}}</h1>
+
+    <form id="mod-customeval-evaluation-form" class="mod-customeval-form needs-validation" novalidate>
+        {{#criteria}}
+        <div class="mod-customeval-criterion card mb-3">
+            <div class="card-body">
+                <h2 class="h5 card-title">{{description}}</h2>
+                <div class="mod-customeval-options" role="radiogroup" aria-required="true">
+                    {{#options}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio"
+                               name="criteria[{{id}}]"
+                               id="option-{{id}}"
+                               value="{{id}}"
+                               required>
+                        <label class="form-check-label" for="option-{{id}}">
+                            {{text}}
+                        </label>
+                    </div>
+                    {{/options}}
+                </div>
+                <div class="mod-customeval-comments mt-2">
+                    <label for="comments-{{id}}" class="sr-only">{{#str}}comments, mod_customeval{{/str}}</label>
+                    <textarea class="form-control"
+                              id="comments-{{id}}"
+                              name="comments[{{id}}]"
+                              placeholder="{{#str}}comments, mod_customeval{{/str}}"
+                              rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        {{/criteria}}
+
+        <div class="mod-customeval-actions text-right mt-4">
+            <button type="submit" class="btn btn-primary">
+                {{#str}}saveevaluation, mod_customeval{{/str}}
+            </button>
+        </div>
+    </form>
+</div>
