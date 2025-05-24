@@ -26,6 +26,9 @@ class mod_customeval_mod_form extends moodleform_mod {
         $mform->addElement('hidden', 'criteriajson', '');
         $mform->setType('criteriajson', PARAM_RAW);
 
+        // Add AMD module initialization HERE
+        $PAGE->requires->js_call_amd('mod_customeval/sectionmanager', 'init');
+
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
     }
