@@ -1,133 +1,160 @@
-/* This file is part of Moodle - http://moodle.org/
- *
- * Moodle is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Moodle is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/* ============ Base Container Styles ============ */
-.mod-customeval-container {
-    padding: 1.5rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.mod-customeval-activity-container,
-.mod-customeval-evaluation-container {
-    padding: 1.5rem;
-    background-color: var(--white);
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-
-/* ============ Form Elements ============ */
-.mod-customeval-form {
-    margin-top: 1.5rem;
-}
-
-.mod-customeval-section {
-    border: 1px solid var(--border-color);
-}
-
-.mod-customeval-section .card-header {
-    background-color: var(--light);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.mod-customeval-criterion {
+/* ============ Base Mobile Styles ============ */
+.mod-customeval-mobile-container {
     padding: 1rem;
-    border-left: 4px solid var(--primary);
-    margin-bottom: 1.5rem;
-    background-color: var(--gray-100);
-    border-radius: 0.25rem;
-}
-
-.mod-customeval-options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 1rem 0;
-}
-
-.mod-customeval-comments textarea {
-    min-height: 80px;
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
 }
 
 /* ============ Student List ============ */
-.mod-customeval-student-list {
-    margin-top: 1rem;
+.mod-customeval-mobile-student-list {
+    margin: 1rem 0;
 }
 
-.mod-customeval-student-list .list-group-item {
+.mod-customeval-mobile-student-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.mod-customeval-mobile-student-item:hover {
+    background-color: var(--gray-100);
+}
+
+.mod-customeval-mobile-student-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+/* ============ Evaluation Form ============ */
+.mod-customeval-mobile-form {
+    margin-top: 1.5rem;
+}
+
+.mod-customeval-mobile-criterion {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.mod-customeval-mobile-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.mod-customeval-mobile-option {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: var(--gray-50);
+}
+
+.mod-customeval-mobile-radio {
+    margin-right: 0.75rem;
+    width: 18px;
+    height: 18px;
+}
+
+.mod-customeval-mobile-comments {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* ============ Notifications ============ */
+.mod-customeval-mobile-notification {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
     padding: 0.75rem 1.25rem;
-    border-color: var(--border-color);
+    border-radius: 6px;
+    z-index: 1000;
+    max-width: 300px;
+    animation: slideIn 0.3s ease-out;
 }
 
-.mod-customeval-student-list .evaluate-btn {
-    text-decoration: none;
-    color: var(--body-color);
+.mod-customeval-mobile-notification-success {
+    background: var(--success);
+    color: white;
 }
 
-.mod-customeval-student-list .evaluate-btn:hover {
-    color: var(--primary);
+.mod-customeval-mobile-notification-error {
+    background: var(--danger);
+    color: white;
 }
 
-/* ============ Buttons & Actions ============ */
-.mod-customeval-actions {
-    margin-top: 2rem;
-}
-
-.mod-customeval-actions .btn {
-    min-width: 120px;
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
 }
 
 /* ============ Loading States ============ */
-.mod-customeval-form .btn-loading .spinner-border {
-    vertical-align: text-top;
-    margin-right: 0.5rem;
+.mod-customeval-mobile-loading {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.mod-customeval-mobile-loading .spinner {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.2rem;
 }
 
 /* ============ Responsive Adjustments ============ */
-@media (max-width: 768px) {
-    .mod-customeval-container,
-    .mod-customeval-activity-container,
-    .mod-customeval-evaluation-container {
-        padding: 1rem;
+@media (max-width: 480px) {
+    .mod-customeval-mobile-student-item {
+        padding: 0.75rem;
     }
-
-    .mod-customeval-options {
-        flex-direction: column;
+    
+    .mod-customeval-mobile-criterion {
+        padding: 0.75rem;
+    }
+    
+    .mod-customeval-mobile-radio {
+        width: 16px;
+        height: 16px;
     }
 }
 
-/* ============ Validation States ============ */
-.mod-customeval-form .is-invalid ~ .invalid-feedback {
-    display: block;
-    color: var(--danger);
-    font-size: 0.875rem;
+@media (max-width: 360px) {
+    .mod-customeval-mobile-container {
+        padding: 0.5rem;
+    }
+    
+    .mod-customeval-mobile-student-avatar {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* ============ Form Validation ============ */
+.mod-customeval-mobile-form .is-invalid {
+    border-color: var(--danger) !important;
+    box-shadow: 0 0 0 2px rgba(var(--danger-rgb), 0.1);
+}
+
+.mod-customeval-mobile-form .invalid-feedback {
+    font-size: 0.8rem;
     margin-top: 0.25rem;
-}
-
-.mod-customeval-form .was-validated .form-control:invalid,
-.mod-customeval-form .was-validated .form-check-input:invalid {
-    border-color: var(--danger);
+    color: var(--danger);
 }
 
 /* ============ Accessibility ============ */
-.mod-customeval-form [aria-invalid="true"] {
-    outline: 2px solid var(--danger);
+.mod-customeval-mobile-option:focus-within {
+    outline: 2px solid var(--primary);
     outline-offset: 2px;
-}
-
-.mod-customeval-form [aria-busy="true"] {
-    opacity: 0.7;
 }
