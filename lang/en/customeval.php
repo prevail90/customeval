@@ -23,6 +23,8 @@ $string['modulename_help'] = 'The custom evaluation module allows creating custo
 $string['pluginname'] = 'Custom Evaluations';
 $string['pluginadministration'] = 'Custom Evaluations Administration';
 $string['search:activity'] = 'Custom evaluations';
+$string['activityloaded'] = 'Activity loaded';
+$string['formloaded'] = 'Evaluation form loaded';
 
 // ============ Forms ============
 $string['name'] = 'Evaluation Name';
@@ -40,6 +42,8 @@ $string['sectiondescription'] = 'Description';
 
 // ============ Evaluation ============
 $string['evaluate'] = 'Evaluate';
+$string['savesuccess'] = 'Evaluation saved successfully';
+$string['saving'] = 'Saving evaluation...';
 $string['saveevaluation'] = 'Save Evaluation';
 $string['evaluationsaved'] = 'Evaluation saved successfully';
 $string['evaluationfor'] = 'Evaluation for {$a}';
@@ -54,6 +58,8 @@ $string['error:uniquevalues'] = 'All option values must be unique';
 $string['error:submissionfailed'] = 'Evaluation submission failed';
 $string['error:invalidformula'] = 'Invalid grading formula syntax';
 $string['error:nopermission'] = 'You don\'t have permission to perform this action';
+$string['rendererror'] = 'Display error';
+$string['saveerror'] = 'Error saving evaluation';
 
 // ============ Mobile ============
 $string['mobileapp:offlineevaluation'] = 'Evaluation saved for offline sync';
