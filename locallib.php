@@ -1,32 +1,100 @@
 <?php
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+defined('MOODLE_INTERNAL') || die();
 
-class mod_customeval_mod_form extends moodleform_mod {
-    public function definition() {
-        global $PAGE;
+require_once($CFG->libdir . '/mathslib.php');
 
-        $mform = $this->_form;
+/**
+ * Validate custom formula syntax.
+ * 
+ * @param string $formula The formula to validate
+ * @param array $validids Allowed answer IDs (e.g., ['s1', 's2'])
+ * @return bool True if valid
+ */
+function customeval_validate_formula(string $formula, array $validids): bool {
+    // Allow Moodle functions and valid answer IDs
+    $allowed_functions = 'sum|avg|max|min|median|if|sin|cos|sqrt|pi|log|exp|ceil|floor|round';
+    $pattern = '/\b('.$allowed_functions.')\b\(?|\b('.implode('|', $validids).')\b/';
+    $sanitized = preg_replace($pattern, '', $formula);
+    
+    // Check for invalid characters
+    return !preg_match('/[^\d\s+\-*\/%^(),.]/', $sanitized);
+}
 
-        // General section
-        $mform->addElement('header', 'general', get_string('general', 'form'));
+/**
+ * Calculate grade using Moodle's math library.
+ * 
+ * @param string $formula The grading formula
+ * @param array $selectedanswers Map of criterionid => answerid
+ * @param array $answervalues Map of answerid => numeric value
+ * @return float Calculated grade
+ */
+function customeval_calculate_grade(string $formula, array $selectedanswers, array $answervalues): float {
+    global $DB;
 
-        $mform->addElement('text', 'name', get_string('name'), array('size' => '64'));
-        $mform->setType('name', PARAM_TEXT);
-        $mform->addRule('name', null, 'required', null, 'client');
+    $parser = new core_math_expression();
+    $parser->set_suppress_errors(true);
 
-        $this->standard_intro_elements();
+    // Get aggregated values for functions
+    $aggregations = [
+        'sum' => [],
+        'avg' => [],
+        'count' => []
+    ];
 
-        // Grading section
-        $mform->addElement('header', 'grading', get_string('grading', 'mod_customeval'));
-        $mform->addElement('text', 'maxgrade', get_string('maxgrade', 'mod_customeval'));
-        $mform->setType('maxgrade', PARAM_INT);
-        $mform->setDefault('maxgrade', 100);
-
-        // Criteria and options would be managed via JS
-        $mform->addElement('hidden', 'criteriajson', '');
-        $mform->setType('criteriajson', PARAM_RAW);
-
-        $this->standard_coursemodule_elements();
-        $this->add_action_buttons();
+    foreach ($selectedanswers as $criterionid => $answerid) {
+        $value = $answervalues[$answerid] ?? 0.0;
+        $aggregations['sum'][$answerid] = ($aggregations['sum'][$answerid] ?? 0) + $value;
+        $aggregations['count'][$answerid] = ($aggregations['count'][$answerid] ?? 0) + 1;
     }
+
+    // Replace formula functions with aggregated values
+    $formula = preg_replace_callback(
+        '/(sum|avg|count|max|min|median)\(([a-z0-9,]+)\)/',
+        function ($matches) use ($aggregations) {
+            $func = $matches[1];
+            $args = explode(',', $matches[2]);
+            $values = [];
+            
+            foreach ($args as $arg) {
+                $arg = trim($arg);
+                switch ($func) {
+                    case 'sum': $values[] = $aggregations['sum'][$arg] ?? 0; break;
+                    case 'avg': 
+                        $sum = $aggregations['sum'][$arg] ?? 0;
+                        $count = $aggregations['count'][$arg] ?? 1;
+                        $values[] = $count ? $sum / $count : 0;
+                        break;
+                    case 'count': $values[] = $aggregations['count'][$arg] ?? 0; break;
+                }
+            }
+            
+            return match($func) {
+                'sum' => array_sum($values),
+                'avg' => array_sum($values) / count($values),
+                'count' => array_sum($values),
+                'max' => max($values ?: [0]),
+                'min' => min($values ?: [0]),
+                'median' => customeval_median($values),
+                default => 0
+            };
+        },
+        $formula
+    );
+
+    try {
+        return (float)$parser->evaluate($formula);
+    } catch (Exception $e) {
+        error_log("Formula error: ".$e->getMessage());
+        return 0.0;
+    }
+}
+
+/**
+ * Calculate median of values.
+ */
+function customeval_median(array $values): float {
+    if (empty($values)) return 0.0;
+    sort($values);
+    $mid = floor((count($values) - 1) / 2);
+    return (count($values) % 2) ? $values[$mid] : ($values[$mid] + $values[$mid + 1]) / 2;
 }
