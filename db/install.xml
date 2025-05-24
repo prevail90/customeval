@@ -1,102 +1,93 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/customeval/db" VERSION="20240601" COMMENT="Custom Evaluations database tables">
-    <TABLES>
-        <!-- Main activity table -->
-        <TABLE NAME="mod_customeval" COMMENT="Main table for Custom Evaluations">
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="Primary key"/>
-                <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Course ID this evaluation belongs to"/>
-                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="Custom Evaluation" COMMENT="Evaluation name"/>
-                <FIELD NAME="intro" TYPE="text" NOTNULL="false" COMMENT="Evaluation description"/>
-                <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" COMMENT="Format of the intro text (0=MOODLE, 1=HTML, etc.)"/>
-                <FIELD NAME="gradingformula" TYPE="text" NOTNULL="false" COMMENT="PHP formula for calculating grades"/>
-                <FIELD NAME="maxgrade" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="100" COMMENT="Maximum grade for this evaluation"/>
-                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when created"/>
-                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when last modified"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key"/>
-                <KEY NAME="course" TYPE="foreign" FIELDS="course" REFTABLE="course" REFFIELDS="id" COMMENT="Link to course table"/>
-            </KEYS>
-        </TABLE>
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLDB PATH="mod/customeval/db" VERSION="2024061800">
+  <TABLES>
+    
+    <!-- Main activity instance table -->
+    <TABLE NAME="customeval" COMMENT="Stores main activity configuration">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique ID for each Custom Evaluation activity"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Course ID this activity belongs to"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" 
+               COMMENT="Activity name displayed in course"/>
+        <FIELD NAME="intro" TYPE="text" 
+               COMMENT="Activity description shown to teachers"/>
+        <FIELD NAME="formula" TYPE="text" NOTNULL="true" 
+               COMMENT="Custom grading formula using answer IDs"/>
+        <FIELD NAME="maxgrade" TYPE="number" LENGTH="10,2" NOTNULL="true" DEFAULT="100" 
+               COMMENT="Maximum achievable grade for this activity"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="course_fk" TYPE="foreign" FIELDS="course" REFTABLE="course"/>
+      </KEYS>
+    </TABLE>
 
-        <!-- Evaluation sections -->
-        <TABLE NAME="mod_customeval_sections" COMMENT="Evaluation sections/rubrics">
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="Primary key"/>
-                <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Link to main evaluation table"/>
-                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Section name"/>
-                <FIELD NAME="description" TYPE="text" NOTNULL="false" COMMENT="Section description"/>
-                <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" COMMENT="Order of this section"/>
-                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when created"/>
-                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when last modified"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key"/>
-                <KEY NAME="customevalid" TYPE="foreign" FIELDS="customevalid" REFTABLE="mod_customeval" REFFIELDS="id" COMMENT="Link to parent evaluation"/>
-            </KEYS>
-        </TABLE>
+    <!-- Evaluation criteria/rubric items -->
+    <TABLE NAME="customeval_criteria" COMMENT="Stores rubric criteria for evaluations">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique ID for each criterion"/>
+        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to customeval table"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="true" 
+               COMMENT="Text description of the evaluation criterion"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Display order of criteria"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="customevalid_fk" TYPE="foreign" FIELDS="customevalid" REFTABLE="customeval"/>
+      </KEYS>
+    </TABLE>
 
-        <!-- Evaluation criteria -->
-        <TABLE NAME="mod_customeval_criteria" COMMENT="Evaluation criteria">
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="Primary key"/>
-                <FIELD NAME="sectionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Link to section table"/>
-                <FIELD NAME="description" TYPE="text" NOTNULL="true" COMMENT="Criterion description"/>
-                <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" COMMENT="Order of this criterion"/>
-                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when created"/>
-                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when last modified"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key"/>
-                <KEY NAME="sectionid" TYPE="foreign" FIELDS="sectionid" REFTABLE="mod_customeval_sections" REFFIELDS="id" COMMENT="Link to parent section"/>
-            </KEYS>
-        </TABLE>
+    <!-- Predefined answer options for criteria -->
+    <TABLE NAME="customeval_answers" COMMENT="Stores answer options for each criterion">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique ID for each answer option"/>
+        <FIELD NAME="criterionid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to customeval_criteria table"/>
+        <FIELD NAME="answerid" TYPE="char" LENGTH="20" NOTNULL="true" 
+               COMMENT="Unique identifier for formula calculations (e.g., s1, s2)"/>
+        <FIELD NAME="answertext" TYPE="text" NOTNULL="true" 
+               COMMENT="Display text for the answer option"/>
+        <FIELD NAME="value" TYPE="number" LENGTH="10,2" NOTNULL="true" 
+               COMMENT="Numerical value used in grade calculations"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="criterionid_fk" TYPE="foreign" FIELDS="criterionid" REFTABLE="customeval_criteria"/>
+      </KEYS>
+    </TABLE>
 
-        <!-- Answer options -->
-        <TABLE NAME="mod_customeval_options" COMMENT="Answer options for evaluations">
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="Primary key"/>
-                <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Link to main evaluation table"/>
-                <FIELD NAME="sectionid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" COMMENT="Link to section table"/>
-                <FIELD NAME="optiontext" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Display text for the option"/>
-                <FIELD NAME="optionvalue" TYPE="char" LENGTH="50" NOTNULL="true" COMMENT="Value used in calculations"/>
-                <FIELD NAME="weight" TYPE="float" NOTNULL="true" DEFAULT="0" COMMENT="Numeric weight for scoring"/>
-                <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" COMMENT="Order of this option"/>
-                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when created"/>
-                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when last modified"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key"/>
-                <KEY NAME="customevalid" TYPE="foreign" FIELDS="customevalid" REFTABLE="mod_customeval" REFFIELDS="id" COMMENT="Link to parent evaluation"/>
-                <KEY NAME="sectionid" TYPE="foreign" FIELDS="sectionid" REFTABLE="mod_customeval_sections" REFFIELDS="id" COMMENT="Link to parent section"/>
-            </KEYS>
-        </TABLE>
+    <!-- Student evaluation results -->
+    <TABLE NAME="customeval_grades" COMMENT="Stores evaluation results per student">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique ID for each evaluation record"/>
+        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to customeval table"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Student being evaluated (foreign key to user table)"/>
+        <FIELD NAME="answers" TYPE="text" NOTNULL="true" 
+               COMMENT="JSON structure storing selected answer IDs per criterion"/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10,2" 
+               COMMENT="Calculated grade based on formula and selected answers"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="customevalid_fk" TYPE="foreign" FIELDS="customevalid" REFTABLE="customeval"/>
+        <KEY NAME="userid_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="customevalid_userid" UNIQUE="true">
+          <INDEX-FIELD NAME="customevalid"/>
+          <INDEX-FIELD NAME="userid"/>
+        </INDEX>
+      </INDEXES>
+    </TABLE>
 
-        <!-- Evaluation submissions -->
-        <TABLE NAME="mod_customeval_ratings" COMMENT="Individual evaluation ratings">
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="Primary key"/>
-                <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Link to main evaluation table"/>
-                <FIELD NAME="criteriaid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Link to criteria table"/>
-                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="User being evaluated"/>
-                <FIELD NAME="evaluatorid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="User who did the evaluation"/>
-                <FIELD NAME="optionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Selected option ID"/>
-                <FIELD NAME="comments" TYPE="text" NOTNULL="false" COMMENT="Evaluation comments"/>
-                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when created"/>
-                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" COMMENT="Timestamp when last modified"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key"/>
-                <KEY NAME="customevalid" TYPE="foreign" FIELDS="customevalid" REFTABLE="mod_customeval" REFFIELDS="id" COMMENT="Link to parent evaluation"/>
-                <KEY NAME="criteriaid" TYPE="foreign" FIELDS="criteriaid" REFTABLE="mod_customeval_criteria" REFFIELDS="id" COMMENT="Link to criterion"/>
-                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" COMMENT="Link to user being evaluated"/>
-                <KEY NAME="evaluatorid" TYPE="foreign" FIELDS="evaluatorid" REFTABLE="user" REFFIELDS="id" COMMENT="Link to evaluator user"/>
-                <KEY NAME="optionid" TYPE="foreign" FIELDS="optionid" REFTABLE="mod_customeval_options" REFFIELDS="id" COMMENT="Link to selected option"/>
-            </KEYS>
-            <INDEXES>
-                <INDEX NAME="user_evaluator" UNIQUE="false" FIELDS="userid,evaluatorid" COMMENT="Index for finding evaluations by user and evaluator"/>
-            </INDEXES>
-        </TABLE>
-    </TABLES>
+  </TABLES>
 </XMLDB>
