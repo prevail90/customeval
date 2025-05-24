@@ -29,6 +29,8 @@ $string['formloaded'] = 'Evaluation form loaded';
 // ============ Forms ============
 $string['name'] = 'Evaluation Name';
 $string['maxgrade'] = 'Maximum Grade';
+$string['grading'] = 'Grading';
+$string['gradetopass'] = 'Grade to pass';
 $string['gradingformula'] = 'Grading Formula';
 $string['gradingformula_help'] = 'Enter a PHP formula using option values (e.g., (GO*2 + NOGO*1)/3)';
 $string['optiontext'] = 'Option Text';
