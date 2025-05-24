@@ -1,0 +1,59 @@
+<div class="mod-customeval-container" data-region="evaluation-form">
+    <form id="mod-customeval-evaluation-form" class="mod-customeval-form" aria-live="polite">
+        <input type="hidden" name="cmid" value="{{cmid}}">
+        <input type="hidden" name="userid" value="{{userid}}">
+
+        {{#sections}}
+        <div class="mod-customeval-section card mb-4" data-sectionid="{{sectionid}}" aria-labelledby="section-{{sectionid}}-title">
+            <div class="card-header bg-light">
+                <h3 id="section-{{sectionid}}-title" class="h5 mb-0">{{name}}</h3>
+                {{#description}}<p class="mb-0 text-muted">{{description}}</p>{{/description}}
+            </div>
+
+            <div class="card-body">
+                {{#criteria}}
+                <div class="mod-customeval-criterion mb-4" data-criterionid="{{id}}">
+                    <h4 class="h6 criterion-title">{{description}}</h4>
+
+                    <div class="mod-customeval-options" role="radiogroup" aria-labelledby="criterion-{{id}}-label">
+                        {{#options}}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio"
+                                   name="criteria[{{id}}]"
+                                   id="option-{{id}}"
+                                   value="{{id}}"
+                                   data-value="{{value}}"
+                                   data-weight="{{weight}}"
+                                   required>
+                            <label class="form-check-label" for="option-{{id}}">
+                                {{text}} <small class="text-muted">({{value}})</small>
+                            </label>
+                        </div>
+                        {{/options}}
+                    </div>
+
+                    <div class="mod-customeval-comments mt-3">
+                        <label for="comments-{{id}}" class="sr-only">{{#str}}comments, mod_customeval{{/str}}</label>
+                        <textarea class="form-control"
+                                  id="comments-{{id}}"
+                                  name="comments[{{id}}]"
+                                  placeholder="{{#str}}comments, mod_customeval{{/str}}"
+                                  rows="2"></textarea>
+                    </div>
+                </div>
+                {{/criteria}}
+            </div>
+        </div>
+        {{/sections}}
+
+        <div class="mod-customeval-actions text-right mt-4">
+            <button type="submit" class="btn btn-primary" data-action="save-evaluation">
+                <span class="btn-text">{{#str}}saveevaluation, mod_customeval{{/str}}</span>
+                <span class="btn-loading d-none">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">{{#str}}saving, core{{/str}}</span>
+                </span>
+            </button>
+        </div>
+    </form>
+</div>
