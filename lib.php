@@ -26,6 +26,7 @@ function customeval_update_grades($customeval, $userid=0) {
             ];
             grade_update('mod/customeval', $customeval->course, 'mod', 
                        'customeval', $customeval->id, 0, $gradeitem);
+            customeval_grade_item_update($customeval);
         }
     }
 }
@@ -50,8 +51,31 @@ function customeval_delete_grades($customevalid) {
 function customeval_supports($feature) {
     switch($feature) {
         case FEATURE_GRADE_HAS_GRADE: return true;
+        case FEATURE_GRADE_OUTCOMES: return true;
+        case FEATURE_MOD_GRADEBOOK: return true;
         case FEATURE_MOD_INTRO: return true;
         case FEATURE_BACKUP_MOODLE2: return true;
         default: return null;
     }
+}
+
+
+function customeval_grade_item_update($customeval, $grades=null) {
+    global $CFG;
+    require_once($CFG->libdir.'/gradelib.php');
+
+    $params = [
+        'itemname' => $customeval->name,
+        'idnumber' => $customeval->cmidnumber,
+        'gradepass' => $customeval->gradepass,
+        'grademax' => $customeval->maxgrade
+    ];
+
+    if ($grades === 'reset') {
+        $params['reset'] = true;
+        $grades = null;
+    }
+
+    return grade_update('mod/customeval', $customeval->course, 'mod', 
+                      'customeval', $customeval->id, 0, $grades, $params);
 }
