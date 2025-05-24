@@ -29,6 +29,15 @@ class mod_customeval_mod_form extends moodleform_mod {
         // Add AMD module initialization HERE
         $PAGE->requires->js_call_amd('mod_customeval/sectionmanager', 'init');
 
+        // Add standard grading elements
+        $this->standard_grading_coursemodule_elements();
+
+        // Add "Grade to pass" field
+        $mform->addElement('float', 'gradepass', get_string('gradepass', 'grades'));
+        $mform->addHelpButton('gradepass', 'gradepass', 'grades');
+        $mform->setDefault('gradepass', 0);
+        $mform->setType('gradepass', PARAM_FLOAT);
+
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
     }
