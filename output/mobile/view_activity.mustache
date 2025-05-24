@@ -1,0 +1,23 @@
+<div class="mod_customeval-container">
+    <h2>{{name}}</h2>
+    <div class="intro">{{{intro}}}</div>
+
+    {{#canEvaluate}}
+    <h3>{{#str}}studentstoevaluate, mod_customeval{{/str}}</h3>
+    <ul class="student-list">
+        {{#students}}
+        <li>
+            <button class="btn btn-secondary evaluate-btn" data-userid="{{id}}" data-action="evaluate">
+                <img src="{{picture}}" width="40" height="40" alt="">
+                {{fullname}}
+            </button>
+        </li>
+        {{/students}}
+    </ul>
+    {{/canEvaluate}}
+
+    {{#canBeEvaluated}}
+    <h3>{{#str}}yourevaluations, mod_customeval{{/str}}</h3>
+    <div class="alert alert-info">{{#str}}evaluationswillappearhere, mod_customeval{{/str}}</div>
+    {{/canBeEvaluated}}
+</div>
