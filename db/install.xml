@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMLDB PATH="mod/customeval/db" VERSION="2024061800">
+<XMLDB PATH="mod/customeval/db" VERSION="2025052521">
   <TABLES>
     
     <!-- Main activity instance table -->
     <TABLE NAME="customeval" COMMENT="Stores main activity configuration">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
-               COMMENT="Unique ID for each Custom Evaluation activity"/>
-        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" 
-               COMMENT="Course ID this activity belongs to"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" 
-               COMMENT="Activity name displayed in course"/>
-        <FIELD NAME="intro" TYPE="text" 
-               COMMENT="Activity description shown to teachers"/>
-        <FIELD NAME="formula" TYPE="text" NOTNULL="true" 
-               COMMENT="Custom grading formula using answer IDs"/>
-        <FIELD NAME="gradepass" TYPE="numeric" LENGTH="10,2" NOTNULL="true" DEFAULT="0" 
-               COMMENT="Minimum grade required to pass"/>
-        <FIELD NAME="maxgrade" TYPE="number" LENGTH="10,2" NOTNULL="true" DEFAULT="100" 
-               COMMENT="Maximum achievable grade for this activity"/>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique ID for each Custom Evaluation activity"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Course ID this activity belongs to"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Activity name displayed in course"/>
+        <FIELD NAME="intro" TYPE="text" COMMENT="Activity description shown to teachers"/>
+        <FIELD NAME="formula" TYPE="text" NOTNULL="true" COMMENT="Custom grading formula using answer IDs"/>
+        <FIELD NAME="gradepass" TYPE="numeric" LENGTH="10,2" NOTNULL="true" DEFAULT="0" COMMENT="Minimum grade required to pass"/>
+        <FIELD NAME="maxgrade" TYPE="number" LENGTH="10,2" NOTNULL="true" DEFAULT="100" COMMENT="Maximum achievable grade for this activity"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -29,14 +22,10 @@
     <!-- Evaluation criteria/rubric items -->
     <TABLE NAME="customeval_criteria" COMMENT="Stores rubric criteria for evaluations">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
-               COMMENT="Unique ID for each criterion"/>
-        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" 
-               COMMENT="Foreign key to customeval table"/>
-        <FIELD NAME="description" TYPE="text" NOTNULL="true" 
-               COMMENT="Text description of the evaluation criterion"/>
-        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" 
-               COMMENT="Display order of criteria"/>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique ID for each criterion"/>
+        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to customeval table"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="true" COMMENT="Text description of the evaluation criterion"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Display order of criteria"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -47,16 +36,11 @@
     <!-- Predefined answer options for criteria -->
     <TABLE NAME="customeval_answers" COMMENT="Stores answer options for each criterion">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
-               COMMENT="Unique ID for each answer option"/>
-        <FIELD NAME="criterionid" TYPE="int" LENGTH="10" NOTNULL="true" 
-               COMMENT="Foreign key to customeval_criteria table"/>
-        <FIELD NAME="answerid" TYPE="char" LENGTH="20" NOTNULL="true" 
-               COMMENT="Unique identifier for formula calculations (e.g., s1, s2)"/>
-        <FIELD NAME="answertext" TYPE="text" NOTNULL="true" 
-               COMMENT="Display text for the answer option"/>
-        <FIELD NAME="value" TYPE="number" LENGTH="10,2" NOTNULL="true" 
-               COMMENT="Numerical value used in grade calculations"/>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique ID for each answer option"/>
+        <FIELD NAME="criterionid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to customeval_criteria table"/>
+        <FIELD NAME="answerid" TYPE="char" LENGTH="20" NOTNULL="true" COMMENT="Unique identifier for formula calculations (e.g., s1, s2)"/>
+        <FIELD NAME="answertext" TYPE="text" NOTNULL="true" COMMENT="Display text for the answer option"/>
+        <FIELD NAME="value" TYPE="number" LENGTH="10,2" NOTNULL="true" COMMENT="Numerical value used in grade calculations"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -67,16 +51,11 @@
     <!-- Student evaluation results -->
     <TABLE NAME="customeval_grades" COMMENT="Stores evaluation results per student">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" 
-               COMMENT="Unique ID for each evaluation record"/>
-        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" 
-               COMMENT="Foreign key to customeval table"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" 
-               COMMENT="Student being evaluated (foreign key to user table)"/>
-        <FIELD NAME="answers" TYPE="text" NOTNULL="true" 
-               COMMENT="JSON structure storing selected answer IDs per criterion"/>
-        <FIELD NAME="grade" TYPE="number" LENGTH="10,2" 
-               COMMENT="Calculated grade based on formula and selected answers"/>
+        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique ID for each evaluation record"/>
+        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to customeval table"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Student being evaluated (foreign key to user table)"/>
+        <FIELD NAME="answers" TYPE="text" NOTNULL="true" COMMENT="JSON structure storing selected answer IDs per criterion"/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10,2" COMMENT="Calculated grade based on formula and selected answers"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
