@@ -18,9 +18,9 @@
                COMMENT="Activity description"/>
         <FIELD NAME="formula" TYPE="text" NOTNULL="true" 
                COMMENT="Grading formula using answer IDs"/>
-        <FIELD NAME="maxgrade" TYPE="number" LENGTH="10,2" NOTNULL="true" DEFAULT="100" 
+        <FIELD NAME="maxgrade" TYPE="number" PRECISION="10" SCALE="2" NOTNULL="true" DEFAULT="100.00" 
                COMMENT="Maximum achievable grade"/>
-        <FIELD NAME="gradepass" TYPE="number" LENGTH="10,2" NOTNULL="true" DEFAULT="0" 
+        <FIELD NAME="gradepass" TYPE="number" PRECISION="10" SCALE="2" NOTNULL="true" DEFAULT="0.00" 
                COMMENT="Minimum passing grade"/>
       </FIELDS>
       <KEYS>
@@ -58,7 +58,7 @@
                COMMENT="Answer ID for formulas (e.g., s1)"/>
         <FIELD NAME="answertext" TYPE="text" NOTNULL="true" 
                COMMENT="Display text for answer"/>
-        <FIELD NAME="value" TYPE="number" LENGTH="10,2" NOTNULL="true" 
+        <FIELD NAME="value" TYPE="number" PRECISION="10" SCALE="2" NOTNULL="true" 
                COMMENT="Numerical value for grading"/>
       </FIELDS>
       <KEYS>
@@ -78,7 +78,7 @@
                COMMENT="Foreign key to user table"/>
         <FIELD NAME="answers" TYPE="text" NOTNULL="true" 
                COMMENT="JSON of selected answers"/>
-        <FIELD NAME="grade" TYPE="number" LENGTH="10,2" 
+        <FIELD NAME="grade" TYPE="number" PRECISION="10" SCALE="2" 
                COMMENT="Calculated grade"/>
       </FIELDS>
       <KEYS>
