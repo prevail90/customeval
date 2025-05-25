@@ -1,6 +1,31 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
+function customeval_add_instance($data, $mform) {
+    global $DB;
+
+    $data->timecreated = time();
+    $id = $DB->insert_record('customeval', $data);
+    $data->id = $id;
+
+    customeval_grade_item_update($data);
+
+    return $id;
+}
+
+function customeval_update_instance($data, $mform) {
+    global $DB;
+
+    $data->timemodified = time();
+    $data->id = $data->instance;
+
+    $DB->update_record('customeval', $data);
+
+    customeval_grade_item_update($data);
+
+    return true;
+}
+
 /**
  * Update grades in gradebook.
  */
