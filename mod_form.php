@@ -33,10 +33,10 @@ class mod_customeval_mod_form extends moodleform_mod {
         $this->standard_grading_coursemodule_elements();
 
         // Add "Grade to pass" field
-        $mform->addElement('float', 'gradepass', get_string('gradepass', 'grades'));
+        $mform->addElement('text', 'gradepass', get_string('gradepass', 'grades'));
+        $mform->setType('gradepass', PARAM_FLOAT);
         $mform->addHelpButton('gradepass', 'gradepass', 'grades');
         $mform->setDefault('gradepass', 0);
-        $mform->setType('gradepass', PARAM_FLOAT);
 
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
