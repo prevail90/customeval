@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMLDB PATH="mod/customeval/db" VERSION="2025052521" COMMENT="XMLDB file for Moodle mod/customeval"
+<XMLDB PATH="mod/customeval/db" VERSION="2025052522" COMMENT="XMLDB file for Moodle mod/customeval"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://docs.moodle.org/dev/XMLDB_schema">
   
@@ -8,13 +8,20 @@
     <!-- Main activity table -->
     <TABLE NAME="customeval" COMMENT="Stores evaluation activity instances">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique auto-incrementing ID"/>
-        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to course table"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Activity name"/>
-        <FIELD NAME="intro" TYPE="text" COMMENT="Activity description"/>
-        <FIELD NAME="formula" TYPE="text" NOTNULL="true" COMMENT="Grading formula using answer IDs"/>
-        <FIELD NAME="maxgrade" TYPE="numeric" LENGTH="10,2" NOTNULL="true" DEFAULT="100" COMMENT="Maximum achievable grade"/>
-        <FIELD NAME="gradepass" TYPE="numeric" LENGTH="10,2" NOTNULL="true" DEFAULT="0" COMMENT="Minimum passing grade"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique auto-incrementing ID"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to course table"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" 
+               COMMENT="Activity name"/>
+        <FIELD NAME="intro" TYPE="text" 
+               COMMENT="Activity description"/>
+        <FIELD NAME="formula" TYPE="text" NOTNULL="true" 
+               COMMENT="Grading formula using answer IDs"/>
+        <FIELD NAME="maxgrade" TYPE="number" LENGTH="10,2" NOTNULL="true" DEFAULT="100" 
+               COMMENT="Maximum achievable grade"/>
+        <FIELD NAME="gradepass" TYPE="number" LENGTH="10,2" NOTNULL="true" DEFAULT="0" 
+               COMMENT="Minimum passing grade"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -25,10 +32,14 @@
     <!-- Evaluation criteria -->
     <TABLE NAME="customeval_criteria" COMMENT="Evaluation criteria/rubric items">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique auto-incrementing ID"/>
-        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to customeval table"/>
-        <FIELD NAME="description" TYPE="text" NOTNULL="true" COMMENT="Criterion description"/>
-        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Sorting order"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique auto-incrementing ID"/>
+        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to customeval table"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="true" 
+               COMMENT="Criterion description"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Sorting order"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -39,11 +50,16 @@
     <!-- Answer options -->
     <TABLE NAME="customeval_answers" COMMENT="Predefined answer options">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique auto-incrementing ID"/>
-        <FIELD NAME="criterionid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to customeval_criteria table"/>
-        <FIELD NAME="answerid" TYPE="char" LENGTH="20" NOTNULL="true" COMMENT="Answer ID for formulas (e.g., s1)"/>
-        <FIELD NAME="answertext" TYPE="text" NOTNULL="true" COMMENT="Display text for answer"/>
-        <FIELD NAME="value" TYPE="numeric" LENGTH="10,2" NOTNULL="true" COMMENT="Numerical value for grading"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique auto-incrementing ID"/>
+        <FIELD NAME="criterionid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to customeval_criteria table"/>
+        <FIELD NAME="answerid" TYPE="char" LENGTH="20" NOTNULL="true" 
+               COMMENT="Answer ID for formulas (e.g., s1)"/>
+        <FIELD NAME="answertext" TYPE="text" NOTNULL="true" 
+               COMMENT="Display text for answer"/>
+        <FIELD NAME="value" TYPE="number" LENGTH="10,2" NOTNULL="true" 
+               COMMENT="Numerical value for grading"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -54,11 +70,16 @@
     <!-- Student grades -->
     <TABLE NAME="customeval_grades" COMMENT="Student evaluation grades">
       <FIELDS>
-        <FIELD NAME="id" TYPE="serial" SEQUENCE="true" NOTNULL="true" COMMENT="Unique auto-incrementing ID"/>
-        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to customeval table"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to user table"/>
-        <FIELD NAME="answers" TYPE="text" NOTNULL="true" COMMENT="JSON of selected answers"/>
-        <FIELD NAME="grade" TYPE="numeric" LENGTH="10,2" COMMENT="Calculated grade"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" SEQUENCE="true" NOTNULL="true" 
+               COMMENT="Unique auto-incrementing ID"/>
+        <FIELD NAME="customevalid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to customeval table"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" 
+               COMMENT="Foreign key to user table"/>
+        <FIELD NAME="answers" TYPE="text" NOTNULL="true" 
+               COMMENT="JSON of selected answers"/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10,2" 
+               COMMENT="Calculated grade"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
