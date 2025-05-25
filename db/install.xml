@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XMLDB PATH="mod/customeval/db" VERSION="2025052522" COMMENT="XMLDB file for Moodle mod/customeval"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://docs.moodle.org/dev/XMLDB_schema">
+       xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
   
   <TABLES>
 
@@ -25,7 +25,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="course_fk" TYPE="foreign" FIELDS="course" REFTABLE="course"/>
+        <KEY NAME="course_fk" TYPE="foreign" FIELDS="course" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
 
@@ -43,7 +43,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="customevalid_fk" TYPE="foreign" FIELDS="customevalid" REFTABLE="customeval"/>
+        <KEY NAME="customevalid_fk" TYPE="foreign" FIELDS="customevalid" REFTABLE="customeval" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
 
@@ -63,7 +63,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="criterionid_fk" TYPE="foreign" FIELDS="criterionid" REFTABLE="customeval_criteria"/>
+        <KEY NAME="criterionid_fk" TYPE="foreign" FIELDS="criterionid" REFTABLE="customeval_criteria" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
 
@@ -83,8 +83,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="customevalid_fk" TYPE="foreign" FIELDS="customevalid" REFTABLE="customeval"/>
-        <KEY NAME="userid_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user"/>
+        <KEY NAME="customevalid_fk" TYPE="foreign" FIELDS="customevalid" REFTABLE="customeval" REFFIELDS="id"/>
+        <KEY NAME="userid_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
 
