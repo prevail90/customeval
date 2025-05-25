@@ -72,7 +72,13 @@ function xmldb_mod_customeval_upgrade(int $oldversion): bool {
             $dbman->add_index($table, $index);
         }
 
-        upgrade_mod_savepoint(true, 2024061801, 'customeval');
+        upgrade_mod_savepoint(true, 2025052422, 'customeval');
+    }
+    
+    if ($oldversion < 2025052521) {
+        // This forces Moodle to recheck the schema against install.xml
+        // No explicit changes needed - Moodle auto-detects missing comments
+        upgrade_mod_savepoint(true, 2025052521, 'customeval');
     }
 
     return true;
