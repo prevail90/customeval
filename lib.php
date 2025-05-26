@@ -18,7 +18,10 @@ function customeval_get_grade_item($instanceid) {
  * @return float grade to pass or 0 if none set.
  */
 function customeval_get_gradepass($instanceid) {
-    $gradeitem = customeval_get_grade_item($instanceid);
+    $gradeitem = grade_item::fetch([
+        'itemmodule' => 'customeval',
+        'iteminstance' => $instanceid,
+    ]);
     return $gradeitem ? $gradeitem->gradepass : 0;
 }
 
@@ -29,7 +32,10 @@ function customeval_get_gradepass($instanceid) {
  * @return float max grade or 0 if none set.
  */
 function customeval_get_maxgrade($instanceid) {
-    $gradeitem = customeval_get_grade_item($instanceid);
+    $gradeitem = grade_item::fetch([
+        'itemmodule' => 'customeval',
+        'iteminstance' => $instanceid,
+    ]);
     return $gradeitem ? $gradeitem->grademax : 0;
 }
 
