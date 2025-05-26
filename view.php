@@ -29,8 +29,6 @@ if (has_capability('mod/customeval:manage', $context)) {
         get_string('advancedgrading', 'customeval'));
 }
 
-print_tabs([$tabs], $tab);
-
 if ($tab === 'grading' && has_capability('mod/customeval:manage', $context)) {
     require_once('grading_form.php');
     $mform = new grading_form(null, ['customevalid' => $customeval->id]);
@@ -53,6 +51,8 @@ if ($tab === 'grading' && has_capability('mod/customeval:manage', $context)) {
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(format_string($customeval->name));
+//Show Tabs under the heading
+print_tabs([$tabs], $tab);
 
 if (has_capability('mod/customeval:manage', $context)) {
     $setupurl = new moodle_url('/mod/customeval/setup.php', ['id' => $cm->id]);
