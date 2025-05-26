@@ -25,6 +25,7 @@ $string['pluginadministration'] = 'Custom Evaluations Administration';
 $string['search:activity'] = 'Custom evaluations';
 $string['activityloaded'] = 'Activity loaded';
 $string['formloaded'] = 'Evaluation form loaded';
+$string['setupactivity'] = 'Setup Evaluation';
 
 // New strings for the modernized form
 $string['customsettings'] = 'Custom settings';
