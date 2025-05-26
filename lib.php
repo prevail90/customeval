@@ -1,6 +1,38 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Fetch the grade_item object for the given instance.
+ *
+ * @param int $instanceid
+ * @return grade_item|false Grade item object or false if not found.
+ */
+function customeval_get_grade_item($instanceid) {
+    return grade_item::fetch(array('itemmodule' => 'customeval', 'iteminstance' => $instanceid));
+}
+
+/**
+ * Get the grade to pass for a given customeval instance.
+ *
+ * @param int $instanceid
+ * @return float grade to pass or 0 if none set.
+ */
+function customeval_get_gradepass($instanceid) {
+    $gradeitem = customeval_get_grade_item($instanceid);
+    return $gradeitem ? $gradeitem->gradepass : 0;
+}
+
+/**
+ * Get the max grade for a given customeval instance.
+ *
+ * @param int $instanceid
+ * @return float max grade or 0 if none set.
+ */
+function customeval_get_maxgrade($instanceid) {
+    $gradeitem = customeval_get_grade_item($instanceid);
+    return $gradeitem ? $gradeitem->grademax : 0;
+}
+
 function customeval_add_instance($data, $mform) {
     global $DB;
 
@@ -10,6 +42,8 @@ function customeval_add_instance($data, $mform) {
     $record->intro = $data->intro;
     $record->introformat = $data->introformat;
     $record->formula = $data->formula;
+    $gradepass = customeval_get_gradepass($customeval->id);
+    $maxgrade = customeval_get_maxgrade($customeval->id);
 
     $record->timecreated = time();
 
@@ -31,6 +65,8 @@ function customeval_update_instance($data, $mform) {
     $record->intro = $data->intro;
     $record->introformat = $data->introformat;
     $record->formula = $data->formula;
+    $gradepass = customeval_get_gradepass($customeval->id);
+    $maxgrade = customeval_get_maxgrade($customeval->id);
 
     $record->timemodified = time();
 
@@ -39,25 +75,6 @@ function customeval_update_instance($data, $mform) {
     customeval_grade_item_update($record);
 
     return true;
-}
-
-/**
- * Get the grade to pass for a given customeval instance.
- *
- * @param int $instanceid The customeval instance id.
- * @return float Grade to pass or 0 if not set.
- */
-function customeval_get_gradepass($instanceid) {
-    $gradeitem = grade_item::fetch(array(
-        'itemmodule' => 'customeval',
-        'iteminstance' => $instanceid,
-    ));
-
-    if ($gradeitem) {
-        return $gradeitem->gradepass;
-    } else {
-        return 0;
-    }
 }
 
 /**
@@ -128,6 +145,8 @@ function customeval_grade_item_update($customeval, $grades=null) {
     $params = [
         'itemname' => $customeval->name,
         'idnumber' => $customeval->cmidnumber
+        $gradepass = customeval_get_gradepass($customeval->id);
+        $maxgrade = customeval_get_maxgrade($customeval->id);
     ];
 
     if ($grades === 'reset') {
