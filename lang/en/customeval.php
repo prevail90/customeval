@@ -51,7 +51,7 @@ $string['addcriterion'] = 'Add Criterion';
 $string['sectionname'] = 'Section Name';
 $string['sectiondescription'] = 'Description';
 $string['advancedgrading'] = 'Advanced Grading';
-$string['customevaluations'] = 'Custom Evaluations'; // If not already defined
+$string['evaluations'] = 'Evaluation'; // If not already defined
 
 // ============ Evaluation ============
 $string['evaluate'] = 'Evaluate';
