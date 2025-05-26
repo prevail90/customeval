@@ -10,7 +10,6 @@ function customeval_add_instance($data, $mform) {
     $record->intro = $data->intro;
     $record->introformat = $data->introformat;
     $record->formula = $data->formula;
-    $record->maxgrade = $data->maxgrade;
     $record->gradepass = $data->gradepass;
 
     $record->timecreated = time();
@@ -33,7 +32,6 @@ function customeval_update_instance($data, $mform) {
     $record->intro = $data->intro;
     $record->introformat = $data->introformat;
     $record->formula = $data->formula;
-    $record->maxgrade = $data->maxgrade;
     $record->gradepass = $data->gradepass;
 
     $record->timemodified = time();
@@ -113,8 +111,7 @@ function customeval_grade_item_update($customeval, $grades=null) {
     $params = [
         'itemname' => $customeval->name,
         'idnumber' => $customeval->cmidnumber,
-        'gradepass' => $customeval->gradepass,
-        'grademax' => $customeval->maxgrade
+        'gradepass' => $customeval->gradepass
     ];
 
     if ($grades === 'reset') {
