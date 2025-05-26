@@ -16,7 +16,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_customeval_upgrade(int $oldversion): bool {
+function xmldb_mod_customeval_upgrade(int $oldversion): bool {
     global $DB;
     $dbman = $DB->get_manager();
 
