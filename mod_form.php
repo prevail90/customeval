@@ -18,6 +18,13 @@ class mod_customeval_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client'); // Client-side validation
         $mform->addHelpButton('name', 'name', 'mod_customeval'); // Help button
 
+        // Formula field (required)
+        $mform->addElement('textarea', 'formula', get_string('formula', 'mod_customeval'), ['rows' => 4, 'cols' => 60]);
+        $mform->setType('formula', PARAM_RAW); // Allow formulas like (count(s1)/...)
+        $mform->addRule('formula', null, 'required', null, 'client'); // Make it required
+        $mform->setDefault('formula', ''); // Default to empty string
+        $mform->addHelpButton('formula', 'formula', 'mod_customeval'); // Optional help
+
         // Description field (modern editor with file upload support)
         $this->standard_intro_elements(get_string('description', 'mod_customeval'));
         
