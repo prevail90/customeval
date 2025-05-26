@@ -25,6 +25,11 @@ if ($action === 'evaluate') {
 echo $OUTPUT->header();
 echo $OUTPUT->heading(format_string($customeval->name));
 
+if (has_capability('mod/customeval:manage', $context)) {
+    $setupurl = new moodle_url('/mod/customeval/setup.php', ['id' => $cm->id]);
+    echo $OUTPUT->single_button($setupurl, get_string('setupactivity', 'customeval'));
+}
+
 if (!empty($customeval->intro)) {
     echo $OUTPUT->box(format_module_intro('customeval', $customeval, $cm->id),
                       'generalbox mod_introbox', 'customevalintro');
