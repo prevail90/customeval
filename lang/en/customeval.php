@@ -27,12 +27,12 @@ $string['activityloaded'] = 'Activity loaded';
 $string['formloaded'] = 'Evaluation form loaded';
 
 // New strings for the modernized form
-$string['customsettings'] = 'Custom Settings';
-$string['markcompletion'] = 'Mark completion when viewed';
-$string['markcompletion_desc'] = 'If enabled, students must view this activity to mark it as complete.';
-$string['namerequired'] = 'You must provide a name for this activity.';
+$string['customsettings'] = 'Custom settings';
 $string['formula'] = 'Grading formula';
-$string['formula_help'] = 'Use a formula to calculate grades. Example: (count(s1)/(count(s1)+count(s2)))*100';
+$string['formula_help'] = 'Enter the formula to calculate the grade, e.g., (count(s1)/(count(s1)+count(s2)))*100.';
+$string['markcompletion'] = 'Mark on completion';
+$string['markcompletion_desc'] = 'Enable this option to automatically mark the activity as completed.';
+$string['required'] = 'This field is required.';
 
 // ============ Forms ============
 $string['name'] = 'Evaluation Name';
