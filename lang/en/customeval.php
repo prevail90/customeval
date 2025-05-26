@@ -31,6 +31,8 @@ $string['customsettings'] = 'Custom Settings';
 $string['markcompletion'] = 'Mark completion when viewed';
 $string['markcompletion_desc'] = 'If enabled, students must view this activity to mark it as complete.';
 $string['namerequired'] = 'You must provide a name for this activity.';
+$string['formula'] = 'Grading formula';
+$string['formula_help'] = 'Use a formula to calculate grades. Example: (count(s1)/(count(s1)+count(s2)))*100';
 
 // ============ Forms ============
 $string['name'] = 'Evaluation Name';
