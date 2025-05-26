@@ -3,40 +3,48 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/formslib.php');
 
 class mod_customeval_evaluation_form extends moodleform {
+    protected $criteria;
+    protected $formula;
+
+    public function __construct($action=null, $customdata=null) {
+        // Accept criteria and formula from outside
+        $this->criteria = $customdata['criteria'] ?? [];
+        $this->formula = $customdata['formula'] ?? '';
+        parent::__construct($action, $customdata);
+    }
+
     public function definition() {
-        global $DB;
-
         $mform = $this->_form;
-        $customdata = $this->_customdata;
 
-        $criteria = $customdata['criteria'];
-        $options = $customdata['options'];
-
-        $mform->addElement('hidden', 'cmid');
-        $mform->setType('cmid', PARAM_INT);
-        $mform->addElement('hidden', 'userid');
-        $mform->setType('userid', PARAM_INT);
-
-        foreach ($criteria as $criterion) {
-            $mform->addElement('header', 'criterion_'.$criterion->id,
-                               format_text($criterion->description, FORMAT_HTML));
-
-            $radioarray = array();
-            foreach ($options as $option) {
-                if ($option->sectionid == $criterion->sectionid) {
-                    $radioarray[] = $mform->createElement('radio', 'criteria['.$criterion->id.']', '',
-                                                          format_string($option->optiontext), $option->id);
-                }
-            }
-
-            $mform->addGroup($radioarray, 'criteria_'.$criterion->id, '', array('<br>'), false);
-            $mform->addRule('criteria_'.$criterion->id, get_string('required'), 'required', null, 'client');
-
-            $mform->addElement('textarea', 'comments['.$criterion->id.']',
-                               get_string('comments', 'mod_customeval'),
-                               array('rows' => 3, 'cols' => 60, 'class' => 'form-control'));
+        if (empty($this->criteria)) {
+            $mform->addElement('static', 'nocriteria', '', get_string('nocriteria', 'mod_customeval'));
+            return;
         }
 
-        $this->add_action_buttons(true, get_string('saveevaluation', 'mod_customeval'));
+        foreach ($this->criteria as $criterion) {
+            $options = [];
+            foreach ($criterion->answers as $answer) {
+                $options[$answer->answerid] = format_text($answer->answertext);
+            }
+
+            $mform->addElement('select', 'criterion_' . $criterion->id, format_string($criterion->description), $options);
+            $mform->setType('criterion_' . $criterion->id, PARAM_RAW);
+            $mform->addRule('criterion_' . $criterion->id, null, 'required', null, 'client');
+        }
+
+        // Show grading formula, read-only
+        $mform->addElement('static', 'formula', get_string('formula', 'mod_customeval'), format_text($this->formula));
+
+        // Comments
+        $mform->addElement('textarea', 'comments', get_string('comments', 'mod_customeval'), ['rows' => 5, 'cols' => 50]);
+        $mform->setType('comments', PARAM_TEXT);
+
+        $this->add_action_buttons(true, get_string('submitgrade', 'mod_customeval'));
+    }
+
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        // Add any custom validation if needed
+        return $errors;
     }
 }
