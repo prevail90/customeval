@@ -4,11 +4,21 @@ defined('MOODLE_INTERNAL') || die();
 function customeval_add_instance($data, $mform) {
     global $DB;
 
-    $data->timecreated = time();
-    $id = $DB->insert_record('customeval', $data);
-    $data->id = $id;
+    $record = new stdClass();
+    $record->course = $data->course;
+    $record->name = $data->name;
+    $record->intro = $data->intro;
+    $record->introformat = $data->introformat;
+    $record->formula = $data->formula;
+    $record->maxgrade = $data->maxgrade;
+    $record->gradepass = $data->gradepass;
 
-    customeval_grade_item_update($data);
+    $record->timecreated = time();
+
+    $id = $DB->insert_record('customeval', $record);
+    $record->id = $id;
+
+    customeval_grade_item_update($record);
 
     return $id;
 }
@@ -16,12 +26,21 @@ function customeval_add_instance($data, $mform) {
 function customeval_update_instance($data, $mform) {
     global $DB;
 
-    $data->timemodified = time();
-    $data->id = $data->instance;
+    $record = new stdClass();
+    $record->id = $data->instance;
+    $record->course = $data->course;
+    $record->name = $data->name;
+    $record->intro = $data->intro;
+    $record->introformat = $data->introformat;
+    $record->formula = $data->formula;
+    $record->maxgrade = $data->maxgrade;
+    $record->gradepass = $data->gradepass;
 
-    $DB->update_record('customeval', $data);
+    $record->timemodified = time();
 
-    customeval_grade_item_update($data);
+    $DB->update_record('customeval', $record);
+
+    customeval_grade_item_update($record);
 
     return true;
 }
