@@ -9,7 +9,10 @@ class mod_customeval_mod_form extends moodleform_mod {
 
         // General section (adds standard 'name', 'intro', 'introformat')
         $mform->addElement('header', 'general', get_string('general', 'form'));
-        $this->add_intro_editor(true);
+        $mform->addElement('text', 'name', get_string('name'), ['size' => '64']);
+        $mform->setType('name', PARAM_TEXT);
+        $mform->addRule('name', null, 'required', null, 'client');
+        $this->standard_intro_elements();
 
         // Custom settings section
         $mform->addElement('header', 'customsettings', get_string('customsettings', 'mod_customeval'));
