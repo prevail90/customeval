@@ -13,7 +13,7 @@
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Foreign key to course table"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" COMMENT="Activity name"/>
         <FIELD NAME="intro" TYPE="text" COMMENT="Activity description"/>
-        <FIELD NAME="formula" TYPE="text" NOTNULL="true" DEFAULT="" COMMENT="Grading formula using answer IDs"/>
+        <FIELD NAME="formula" TYPE="text" LENGTH="255" NOTNULL="false" COMMENT="Grading formula using answer IDs"/>
         <FIELD NAME="maxgrade" TYPE="number" LENGTH="10" DECIMALS="2" NOTNULL="true" DEFAULT="100.00" COMMENT="Maximum achievable grade"/>
         <FIELD NAME="gradepass" TYPE="number" LENGTH="10" DECIMALS="2" NOTNULL="true" DEFAULT="0.00" COMMENT="Minimum passing grade"/>
       </FIELDS>
