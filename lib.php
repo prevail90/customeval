@@ -148,11 +148,15 @@ function customeval_grade_item_update($customeval, $grades=null) {
     global $CFG;
     require_once($CFG->libdir.'/gradelib.php');
 
+    $gradepass = customeval_get_gradepass($customeval->id);
+    $maxgrade = customeval_get_maxgrade($customeval->id);
+    
     $params = [
         'itemname' => $customeval->name,
         'idnumber' => $customeval->cmidnumber
-        $gradepass = customeval_get_gradepass($customeval->id);
-        $maxgrade = customeval_get_maxgrade($customeval->id);
+        'gradetype' => GRADE_TYPE_VALUE,
+        'grademax'  => $maxgrade,
+        'gradepass' => $gradepass
     ];
 
     if ($grades === 'reset') {
