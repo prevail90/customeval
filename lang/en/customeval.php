@@ -26,6 +26,12 @@ $string['search:activity'] = 'Custom evaluations';
 $string['activityloaded'] = 'Activity loaded';
 $string['formloaded'] = 'Evaluation form loaded';
 
+// New strings for the modernized form
+$string['customsettings'] = 'Custom Settings';
+$string['markcompletion'] = 'Mark completion when viewed';
+$string['markcompletion_desc'] = 'If enabled, students must view this activity to mark it as complete.';
+$string['namerequired'] = 'You must provide a name for this activity.';
+
 // ============ Forms ============
 $string['name'] = 'Evaluation Name';
 $string['maxgrade'] = 'Maximum Grade';
