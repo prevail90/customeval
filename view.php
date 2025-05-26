@@ -15,7 +15,36 @@ $PAGE->set_title(format_string($customeval->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->add_body_class('limitedwidth');
 
-if ($action === 'evaluate') {
+$tab = optional_param('tab', 'evaluations', PARAM_ALPHA);
+
+$tabs = [
+    new tabobject('evaluations',
+        new moodle_url('/mod/customeval/view.php', ['id' => $cm->id, 'tab' => 'evaluations']),
+        get_string('evaluations', 'customeval')),
+];
+
+if (has_capability('mod/customeval:manage', $context)) {
+    $tabs[] = new tabobject('grading',
+        new moodle_url('/mod/customeval/view.php', ['id' => $cm->id, 'tab' => 'grading']),
+        get_string('advancedgrading', 'customeval'));
+}
+
+print_tabs([$tabs], $tab);
+
+if ($tab === 'grading' && has_capability('mod/customeval:manage', $context)) {
+    require_once('grading_form.php');
+    $mform = new grading_form(null, ['customevalid' => $customeval->id]);
+
+    if ($mform->is_cancelled()) {
+        redirect(new moodle_url('/mod/customeval/view.php', ['id' => $cm->id, 'tab' => 'evaluations']));
+    } else if ($data = $mform->get_data()) {
+        // Save grading criteria/formulas here (your DB code)
+        // Then redirect back to evaluations tab or stay on grading tab
+        redirect(new moodle_url('/mod/customeval/view.php', ['id' => $cm->id, 'tab' => 'grading']));
+    } else {
+        $mform->display();
+    }
+} else if ($action === 'evaluate') {
     require_capability('mod/customeval:evaluate', $context);
     $userid = required_param('userid', PARAM_INT);
 } else {
