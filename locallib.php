@@ -2,6 +2,29 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/mathslib.php');
+/**
+ * Retrieves the course, course module, and custom evaluation activity.
+ *
+ * @param int $cmid The course module ID
+ * @return array An array containing the course, course module, and custom evaluation activity objects
+ */
+function customeval_get_activity($cmid) {
+    global $DB;
+
+    // Get course module info
+    $cm = get_coursemodule_from_id('customeval', $cmid);
+    if (!$cm) {
+        throw new moodle_exception('invalidcoursemodule');
+    }
+
+    // Get course info
+    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+
+    // Get the custom evaluation activity
+    $customeval = $DB->get_record('customeval', array('id' => $cm->instance), '*', MUST_EXIST);
+
+    return array($course, $cm, $customeval);
+}
 
 /**
  * Validate custom formula syntax.
