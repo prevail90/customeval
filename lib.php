@@ -42,6 +42,25 @@ function customeval_update_instance($data, $mform) {
 }
 
 /**
+ * Get the grade to pass for a given customeval instance.
+ *
+ * @param int $instanceid The customeval instance id.
+ * @return float Grade to pass or 0 if not set.
+ */
+function customeval_get_gradepass($instanceid) {
+    $gradeitem = grade_item::fetch(array(
+        'itemmodule' => 'customeval',
+        'iteminstance' => $instanceid,
+    ));
+
+    if ($gradeitem) {
+        return $gradeitem->gradepass;
+    } else {
+        return 0;
+    }
+}
+
+/**
  * Update grades in gradebook.
  */
 function customeval_update_grades($customeval, $userid = 0) {
