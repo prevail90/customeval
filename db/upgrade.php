@@ -26,8 +26,8 @@ function xmldb_mod_customeval_upgrade(int $oldversion): bool {
     }
 
     if ($oldversion < 2024060200) {
-        // Add index for performance
-        $table = new xmldb_table('mod_customeval_ratings');
+        // Add index for performance on customeval_grades table (corrected table name)
+        $table = new xmldb_table('customeval_grades');
         $index = new xmldb_index('user_evaluator', XMLDB_INDEX_NOTUNIQUE, ['userid', 'evaluatorid']);
 
         if (!$dbman->index_exists($table, $index)) {
@@ -37,8 +37,8 @@ function xmldb_mod_customeval_upgrade(int $oldversion): bool {
     }
 
     if ($oldversion < 2024060300) {
-        // Add mobile completion tracking
-        $table = new xmldb_table('mod_customeval');
+        // Add mobilecompletion field to customeval table
+        $table = new xmldb_table('customeval');
         $field = new xmldb_field('mobilecompletion', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
 
         if (!$dbman->field_exists($table, $field)) {
@@ -47,26 +47,22 @@ function xmldb_mod_customeval_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2024060300, 'customeval');
     }
 
-    if ($oldversion < 2025052422) { // Update with your new version
-        
-        // Define table customeval to be modified
+    if ($oldversion < 2025052422) {
+        // Add gradepass and maxgrade fields, and an index on gradepass in customeval table
         $table = new xmldb_table('customeval');
 
-        // Add gradepass field
         $gradepass_field = new xmldb_field('gradepass', XMLDB_TYPE_NUMBER, '10,2', null, 
-                                         XMLDB_NOTNULL, null, 0, 'maxgrade');
+                                          XMLDB_NOTNULL, null, 0, 'maxgrade');
         if (!$dbman->field_exists($table, $gradepass_field)) {
             $dbman->add_field($table, $gradepass_field);
         }
 
-        // Add maxgrade field (if not already present)
         $maxgrade_field = new xmldb_field('maxgrade', XMLDB_TYPE_NUMBER, '10,2', null, 
-                                        XMLDB_NOTNULL, null, 100, 'formula');
+                                         XMLDB_NOTNULL, null, 100, 'formula');
         if (!$dbman->field_exists($table, $maxgrade_field)) {
             $dbman->add_field($table, $maxgrade_field);
         }
 
-        // Conditionally add index for performance
         $index = new xmldb_index('gradepass_idx', XMLDB_INDEX_NOTUNIQUE, ['gradepass']);
         if (!$dbman->index_exists($table, $index)) {
             $dbman->add_index($table, $index);
@@ -74,12 +70,18 @@ function xmldb_mod_customeval_upgrade(int $oldversion): bool {
 
         upgrade_mod_savepoint(true, 2025052422, 'customeval');
     }
-    
+
     if ($oldversion < 2025052521) {
-        // This forces Moodle to recheck the schema against install.xml
-        // No explicit changes needed - Moodle auto-detects missing comments
+        // Recheck schema against install.xml - no explicit changes
         upgrade_mod_savepoint(true, 2025052521, 'customeval');
+    }
+
+    if ($oldversion < 2025052601) {
+        // Fix table name references or other small fixes if needed
+        // (No explicit changes here; just bumping version for clarity)
+        upgrade_mod_savepoint(true, 2025052601, 'customeval');
     }
 
     return true;
 }
+
