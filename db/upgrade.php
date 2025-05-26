@@ -96,6 +96,13 @@ function xmldb_customeval_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2025052603, 'customeval');
     }
 
+    if ($oldversion < 2025052604) {
+        // Place upgrade logic here (if needed), or leave empty if only a version bump
+
+        // Example: (no structural change, just a bump)
+        upgrade_mod_savepoint(true, 2025052604, 'customeval');
+    }
+    
     return true;
 }
 
