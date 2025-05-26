@@ -153,7 +153,7 @@ function customeval_grade_item_update($customeval, $grades=null) {
     
     $params = [
         'itemname' => $customeval->name,
-        'idnumber' => $customeval->cmidnumber
+        'idnumber' => $customeval->cmidnumber,
         'gradetype' => GRADE_TYPE_VALUE,
         'grademax'  => $maxgrade,
         'gradepass' => $gradepass
